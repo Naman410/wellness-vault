@@ -92,7 +92,7 @@ Create a `.env` file:
 
 ```
 OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=mistral
+OLLAMA_MODEL=llama3.2:3b
 ANYTHINGLLM_BASE_URL=http://localhost:3001
 ANYTHINGLLM_API_KEY=your_api_key_here
 SAMPLE_DATA_DIR=.tmp/sample_data
@@ -101,15 +101,8 @@ SAMPLE_DATA_DIR=.tmp/sample_data
 ### Step 2: Pull Ollama models
 
 ```bash
-ollama pull mistral            # Main LLM (~4.1GB)
+ollama pull llama3.2:3b        # Main LLM — fits in 4GB VRAM (~2GB)
 ollama pull nomic-embed-text   # Embedding model (~270MB)
-```
-
-For machines with less than 8GB VRAM, use a smaller model:
-
-```bash
-ollama pull llama3.2:3b        # Fits in 4GB VRAM (~2GB)
-ollama pull phi3:mini           # Alternative small model (~2.3GB)
 ```
 
 ### Step 3: Configure AnythingLLM
@@ -196,15 +189,15 @@ The fetch scripts replace the sample data generator. Everything downstream (uplo
 
 | RAM | Recommended Model | Response Time |
 |-----|------------------|---------------|
-| 8GB | mistral (CPU) | ~30-60s |
-| 16GB | mistral (CPU/GPU) | ~10-20s |
-| 32GB+ | llama3:70b or mixtral:8x7b | ~5-10s |
-| NVIDIA GPU (6GB+ VRAM) | Any 7B model | ~3-8s |
-| NVIDIA GPU (4GB VRAM) | llama3.2:3b or phi3:mini | ~5-8s |
+| 8GB RAM, no GPU | llama3.2:3b (CPU) | ~15-30s |
+| 16GB RAM, no GPU | llama3.2:3b (CPU) | ~8-15s |
+| NVIDIA GPU (4GB VRAM) | llama3.2:3b (GPU) ✓ this build | ~3-6s |
+| NVIDIA GPU (6GB+ VRAM) | mistral 7B or similar | ~3-8s |
+| 32GB+ RAM | llama3:70b or mixtral:8x7b | ~5-10s |
 
 ## Known Limitations
 
-1. **Local model quality**: Mistral 7B is good for pattern recognition and document search, but won't match GPT-4/Claude for nuanced multi-document reasoning. Position as "first researcher, not final analyst."
+1. **Local model quality**: llama3.2:3b is excellent for pattern recognition and document search, but won't match GPT-4/Claude for nuanced multi-document reasoning. Position as "first researcher, not final analyst."
 2. **RAG accuracy**: Keep documents focused and well-named. Small, topic-specific files retrieve better than large combined docs.
 3. **No real-time updates**: Data must be manually exported and re-ingested (or automated via fetch scripts for real clients).
 4. **Single-user**: AnythingLLM Desktop runs on one machine. Docker deployment needed for multi-user access.

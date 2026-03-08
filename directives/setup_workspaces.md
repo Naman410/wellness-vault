@@ -63,7 +63,7 @@ Sends a test query to each workspace and checks for:
 - CSV files don't embed properly through the API — must convert to TXT first
 - Ollama must be running or embedding fails silently (no error, just 0 docs embedded)
 - Embedding documents one-by-one is more reliable than batch
-- Verification queries can be slow on CPU-only setups (Mistral 7B on CPU ~30-120s)
+- Verification queries can be slow on CPU-only setups (llama3.2:3b on CPU ~15-60s; GPU ~3-6s)
 - The script is idempotent: clears existing docs before re-embedding
 - Known issue: if a file is uploaded multiple times (creating duplicates in staging), subsequent
   embeddings of that filename may silently fail. If files fail to embed, upload them manually
